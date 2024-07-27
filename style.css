@@ -1,0 +1,16 @@
+.container-grid__cell {
+    flex: 1;
+    height: auto;
+    aspect-ratio: 1/1;
+    background-color: red;
+    /* opacity: 0; */
+}
+
+.container-grid__row {
+    display: flex;
+}
+
+.container-grid {
+    width: 80vh;
+    height: 80vh;
+}
