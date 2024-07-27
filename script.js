@@ -1,6 +1,6 @@
 const gridContainer = document.querySelector('.container-grid');
-const buttonSize = document.querySelector('.button-size');
-const buttonReset = document.querySelector('.button-reset');
+const buttonSize = document.querySelector('.container-buttons__button-size');
+const buttonReset = document.querySelector('.container-buttons__button-reset');
 
 function createGrid(size) {
     for (let row = 0; row < size; row++) {
@@ -24,7 +24,7 @@ function changeGridSize() {
     if (gridSize > 100) {
         gridSize = 100;
     } else if (gridSize <= 0) {
-        gridSize = 1;
+        gridSize = defaultGridSize;
     } else if (!Number(gridSize)) {
         gridSize = prompt('Enter number!');
     }
@@ -35,15 +35,18 @@ function changeGridSize() {
 
 function resetGrid() {
     gridContainer.textContent = '';
-    createGrid(userGridSize);
+    if (userGridSize == 0) {
+        createGrid(defaultGridSize);
+    } else {
+        createGrid(userGridSize);
+    }
 }
 
-let defaultGridSize = 16;
-let userGridSize;
+let defaultGridSize = 4;
+let userGridSize = 0;
 
 buttonSize.addEventListener('click', () => {
     userGridSize = changeGridSize();
-    console.log(userGridSize)
 })
 
 buttonReset.addEventListener('click', () => {
