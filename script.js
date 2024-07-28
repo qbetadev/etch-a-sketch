@@ -1,6 +1,31 @@
 const gridContainer = document.querySelector('.container-grid');
 const buttonSize = document.querySelector('.button_size');
 const buttonReset = document.querySelector('.button_reset');
+const buttonRainbow = document.querySelector('.button_rainbow');
+const buttonColor = document.querySelector('.button_color');
+const inputColor = document.querySelector('.input_color');
+
+//Color for painting after page loading
+const DEFAULT_COLOR = 'rgb(0,0,0)';
+//Grid size after page loading
+const DEFAULT_SIZE = 16;
+//Coloring mode after page loading
+const DEFAULT_MODE = 'color';
+
+let currentColor = DEFAULT_COLOR;
+let currentSize = DEFAULT_SIZE;
+let currentMode = DEFAULT_MODE;
+
+// When true, moving the mouse draws on the canvas
+let mouseDown = false;
+
+function changeCurrentColor(newColor) {
+    currentColor = newColor;
+}
+
+function changeCurrentMode(newMode) {
+    currentMode = newMode;
+}
 
 function createGrid(size) {
     for (let row = 0; row < size; row++) {
@@ -9,13 +34,20 @@ function createGrid(size) {
         for (let cell = 0; cell < size; cell++) {
             const rowCell = document.createElement('div');
             rowCell.classList.add('container-grid__cell');
-            rowCell.addEventListener('mouseover', () => {
-                randomColor(rowCell);
-                increaseOpacity(rowCell);
-            })
             rowCell.addEventListener('mousedown', () => {
-                randomColor(rowCell);
-                increaseOpacity(rowCell);
+                mouseDown = true;
+            })
+            rowCell.addEventListener('mouseup', () => {
+                mouseDown = false;
+            })
+            rowCell.addEventListener('mouseover', () => {
+                if (mouseDown && currentMode === 'color') {
+                    rowCell.style.backgroundColor = currentColor;
+                    increaseOpacity(rowCell);
+                } else if (mouseDown && currentMode === 'rainbow') {
+                    randomColor(rowCell);
+                    increaseOpacity(rowCell);
+                }
             })
             gridRow.appendChild(rowCell);
         }
@@ -44,42 +76,36 @@ function increaseOpacity(element) {
 	element.style.opacity = opacity;
 }
 
-//Grid size after each page loading
-let defaultGridSize = 16;
-
 function changeGridSize() {
-    let gridSize = prompt('Please, enter the drawing pad size (max. 100)');
-    if (gridSize > 100) {
-        gridSize = 100;
-    } else if (gridSize <= 0) {
-        gridSize = defaultGridSize;
-    } else if (!Number(gridSize)) {
-        gridSize = prompt('Enter number!');
+    currentSize = prompt('Please, enter the drawing pad size (max. 100)');
+    if (currentSize > 100) {
+        currentSize = 100;
+    } else if (currentSize <= 0) {
+        currentSize = DEFAULT_SIZE;
+    } else if (!Number(currentSize)) {
+        currentSize = prompt('Enter number!');
     }
     gridContainer.textContent = '';
-    createGrid(gridSize);
-    return gridSize;
+    createGrid(currentSize);
+    return currentSize;
 }
-
-buttonSize.addEventListener('click', () => {
-    userGridSize = changeGridSize();
-})
-
-//Grid size set by user via button
-let userGridSize = 0;
 
 //Reset grid with the last saved size
 function resetGrid() {
     gridContainer.textContent = '';
-    if (userGridSize == 0) {
-        createGrid(defaultGridSize);
-    } else {
-        createGrid(userGridSize);
-    }
+    createGrid(currentSize);
 }
 
-buttonReset.addEventListener('click', () => {
-    resetGrid();
+buttonSize.addEventListener('click', changeGridSize);
+buttonReset.addEventListener('click', resetGrid);
+buttonRainbow.addEventListener('click', () => {
+    changeCurrentMode('rainbow');
+});
+buttonColor.addEventListener('click', () => {
+    changeCurrentMode('color');
 })
+inputColor.addEventListener('input', (element) => {
+    changeCurrentColor(element.target.value);
+});
 
-createGrid(defaultGridSize);
+createGrid(DEFAULT_SIZE);

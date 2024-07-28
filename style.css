@@ -57,7 +57,8 @@
     width: 200px;
 }
 
-.container-buttons__button {
+.container-buttons__button,
+.container-buttons__input {
     height: 30px;
     width: 200px;
 }
