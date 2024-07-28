@@ -1,9 +1,6 @@
-* {
+.whole-page {
     margin: 0px;
     padding: 0px;
-}
-
-.whole-page {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -46,7 +43,6 @@
     justify-content: center;
     gap: 30px;
     width: 200px;
-    background-color: aqua;
 }
 
 .container-grid {
@@ -54,14 +50,14 @@
     width: 500px;
     height: 500px;
     border: 1px solid black;
+    background-color: white;
 }
 
 .container-dummy {
     width: 200px;
 }
 
-.container-buttons__button-size,
-.container-buttons__button-reset {
+.container-buttons__button {
     height: 30px;
     width: 200px;
 }
@@ -71,6 +67,7 @@
     height: auto;
     aspect-ratio: 1/1;
     background-color: white;
+    opacity: 0;
 }
 
 .container-grid__row {
